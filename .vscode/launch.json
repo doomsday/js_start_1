@@ -2,13 +2,13 @@
     "version": "0.1.0",
     "configurations": [
         {
-            "name": "Launch index.html",
+            "name": "Chrome: Launch index.html",
             "type": "chrome",
             "request": "launch",
             "file": "index.html"
         },
         {
-            "name": "Launch localhost with sourcemaps",
+            "name": "Chrome: Launch localhost with sourcemaps",
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost/mypage.html",
@@ -16,10 +16,10 @@
             "sourceMaps": true
         },
         {
-            "name": "Launch",
+            "name": "NodeJS: Launch",
             "type": "node",
             "request": "launch",
-            "program": "test.js",
+            "program": "app.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": ".",
@@ -36,7 +36,7 @@
             "outDir": null
         },
         {
-            "name": "Attach",
+            "name": "NodeJS: Attach",
             "type": "node",
             "request": "attach",
             "port": 5858
