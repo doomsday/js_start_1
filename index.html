@@ -4,14 +4,16 @@
 <head>
     <title>Calling Functions</title>
     <script>
-        function sayHello() {
-            alert("Hello");
+        function displayTest() {
+            var n = Date();
+            alert(typeof(n + 1));
+            alert(typeof(n - 1));
             }
     </script>
 </head>
 
 <body>
-    <input type="button" value="Say Hello" onclick="sayHello()" />
+    <input type="button" value="Test" onclick="displayTest()" />
 </body>
 
 </html>

@@ -14,6 +14,32 @@
             "url": "http://localhost/mypage.html",
             "webRoot": "./app/files",
             "sourceMaps": true
+        },
+        {
+            "name": "Launch",
+            "type": "node",
+            "request": "launch",
+            "program": "test.js",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": ".",
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "externalConsole": false,
+            "preLaunchTask": "",
+            "sourceMaps": false,
+            "outDir": null
+        },
+        {
+            "name": "Attach",
+            "type": "node",
+            "request": "attach",
+            "port": 5858
         }
     ]
 }
