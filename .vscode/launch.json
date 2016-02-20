@@ -19,7 +19,7 @@
             "name": "NodeJS: Launch",
             "type": "node",
             "request": "launch",
-            "program": "app.js",
+            "program": "server.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": ".",

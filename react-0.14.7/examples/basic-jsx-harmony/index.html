@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Basic Example</title>
-    <link rel="stylesheet" href="./react-0.14.7/examples/shared/css/base.css" />
+    <title>Basic Example with JSX and ES6 features</title>
+    <link rel="stylesheet" href="../shared/css/base.css" />
   </head>
   <body>
-    <h1>Basic Example</h1>
+    <h1>Basic Example with JSX and ES6 features</h1>
     <div id="container">
       <p>
         To install React, follow the instructions on
@@ -18,32 +18,29 @@
       </p>
     </div>
     <h4>Example Details</h4>
-    <p>This is written in vanilla JavaScript (without JSX) and transformed in the browser.</p>
+    <p>This is written with JSX with Harmony (ES6) syntax and transformed in the browser.</p>
     <p>
       Learn more about React at
       <a href="https://facebook.github.io/react" target="_blank">facebook.github.io/react</a>.
     </p>
-    <script src="./react-0.14.7/build/react.js"></script>
-    <script src="./react-0.14.7/build/react-dom.js"></script>
-    <script>
-      var ExampleApplication = React.createClass({
-        render: function() {
+    <script src="../../build/react.js"></script>
+    <script src="../../build/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+    <script type="text/babel">
+      class ExampleApplication extends React.Component {
+        render() {
           var elapsed = Math.round(this.props.elapsed  / 100);
           var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0' );
           var message =
-            'React has been successfully running for ' + seconds + ' seconds.';
+            `React has been successfully running for ${seconds} seconds.`;
 
-          return React.DOM.p(null, message);
+          return <p>{message}</p>;
         }
-      });
-
-      // Call React.createFactory instead of directly call ExampleApplication({...}) in React.render
-      var ExampleApplicationFactory = React.createFactory(ExampleApplication);
-
+      }
       var start = new Date().getTime();
-      setInterval(function() {
+      setInterval(() => {
         ReactDOM.render(
-          ExampleApplicationFactory({elapsed: new Date().getTime() - start}),
+          <ExampleApplication elapsed={new Date().getTime() - start} />,
           document.getElementById('container')
         );
       }, 50);
