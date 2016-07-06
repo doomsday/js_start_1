@@ -19,7 +19,8 @@ q.x = 1
 q.y = 1
 
 try {
-  console.log(Object.getOwnPropertyDescriptor(o1, 'data_prop'))
+  console.log(Object.getOwnPropertyDescriptor(o1, 'accessor_prop'))
+  Object.defineProperty(o1, 'accessor_prop', {enumerable: false})
   console.log(Object.getOwnPropertyDescriptor(o1, 'accessor_prop'))
 } catch (err) {
   console.log('exception: ' + err.message + ', exception type: ' + err.name)
