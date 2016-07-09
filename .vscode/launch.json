@@ -1,19 +1,25 @@
 {
-    "version": "0.1.0",
+    "version": "0.2.0",
     "configurations": [
         {
-            "name": "Chrome: Launch index.html",
+            "name": "Chrome: Launch with sourcemaps",
             "type": "chrome",
             "request": "launch",
-            "file": "index.html"
+            "url": "file:///D:/Projects/js/js_start_1/index.html",
+            "file": "${workspaceRoot}/index.html",
+            "webRoot": "${workspaceRoot}",
+            "sourceMaps": true,
+            "diagnosticLogging": true
         },
         {
-            "name": "Chrome: Launch localhost with sourcemaps",
+            "name": "Chrome: Attach with sourcemaps",
             "type": "chrome",
-            "request": "launch",
-            "url": "http://localhost/mypage.html",
-            "webRoot": "./app/files",
-            "sourceMaps": true
+            "request": "attach",
+            "port": 9222,
+            "sourceMaps": true,
+            "webRoot": "${workspaceRoot}",
+            "url": "file:///D:/Projects/js/js_start_1/index.html",
+            "diagnosticLogging": true
         },
         {
             "name": "NodeJS: Launch",

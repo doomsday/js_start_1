@@ -1,27 +1,20 @@
-function inherit (p) {
-  if (p == null) throw TypeError()
-  if (Object.create) return Object.create(p)
-  var t = typeof p
-  if (t !== 'object' && t !== 'function') throw TypeError()
-  function F () { };
-  F.prototype = p
-  return new F()
-}
-
-var o1 = {
-  data_prop: 111,
-  get accessor_prop () { return this.data_prop },
-  set accessor_prop (value) { this.data_prop = value }
-}
-
-var q = inherit(o1)
-q.x = 1
-q.y = 1
+var MYAPP = (function () {
+  var funcPrivate = function () {
+    console.log('private')
+  }
+  return {
+    func: function (a, b) {
+      console.log(this)
+      return a + b
+    }
+  }
+})()
 
 try {
-  console.log(Object.getOwnPropertyDescriptor(o1, 'accessor_prop'))
-  Object.defineProperty(o1, 'accessor_prop', {enumerable: false})
-  console.log(Object.getOwnPropertyDescriptor(o1, 'accessor_prop'))
+  alert(typeof MYAPP)
+  console.log(typeof MYAPP.func)
+  console.log(MYAPP.func(1, 5))
+  console.log(MYAPP.funcPrivate())
 } catch (err) {
   console.log('exception: ' + err.message + ', exception type: ' + err.name)
 }
