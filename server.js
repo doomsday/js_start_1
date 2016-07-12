@@ -1,32 +1,35 @@
-var MYAPP = (function () {
-  function funcPrivate () {
-    return 'private'
-  }
-  return {
-    func: function (a, b) {
-      //      console.log(this)
-      var that = this
-      function helperFunc (c, d) {
-        that.multily = c * d
-      }
-      helperFunc(a, b)
-      return a + b
-    },
-    funcPublic: funcPrivate
-  }
-})()
+'use strict'
 
-var add = function () {
-  return this.func(10, 10)
+var Man = function (name) {
+  // private
+  var priv = '23'
+  // public
+  this.name = name
+  this.canSpeak = true
+  this.sayHello = function () {
+    return 'My name is ' + this.name + '. I am ' + priv + ' years old.'
+  }
 }
 
-var sum = add.apply(MYAPP, undefined)
+var MyApp = {
+  Man: function (name) {
+    this.name = name
+    this.canSpeak = true
+  }
+}
+
+var jack = new Man('Jack')
+var gena = new MyApp.Man('Gena')
 
 try {
-  console.log('MYAPP.func(2, 3): ' + MYAPP.func(2, 3))
-  console.log('MYAPP.funcPublic(): ' + MYAPP.funcPublic())
-  console.log('MYAPP.multiply: ' + MYAPP.multily)
-  console.log('sum: ' + sum)
+  console.log(jack)
+  console.log(jack.name)
+  console.log(jack.canSpeak)
+  console.log(jack.sayHello())
+  console.log('')
+  console.log(gena)
+  console.log(jack instanceof Man)
+  console.log(gena instanceof MyApp.Man)
 } catch (err) {
   console.log('exception: ' + err.message + ', exception type: ' + err.name)
 }
