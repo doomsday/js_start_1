@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JavaScript Interpreter</title>
+
+    <body>
+        <a href='javascript:
+        var e = "", r = "";
+        do {
+            e = prompt("Expression: " + e + "\n " + r + "\n ", e);
+            try {
+                r = "Result: " + eval(e)
+            } catch (ex) {
+                r = ex
+            }
+        } while (e);
+
+        void 0;'>
+                JavaScript Interpreter
+            </a>
+    </body>
+</head>
+
+</html>

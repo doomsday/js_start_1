@@ -1,35 +1,43 @@
 'use strict'
+Object.prototype.extend = extend
 
-/* ===== Generics ===== */
-// function enumeration (namesToValues) {
-//   // fake constructor to return as a return value
-//   var enumeration = function () { throw 'Creating class instance is forbidden' + ' Enumeration' }
+/* ============================================================== */
+/* ===== GENERICS =============================================== */
+/* ============================================================== */
 
-//   // enumerable values inherit 'this' object
-//   var proto = enumeration.prototype = {
-//     constructor: enumeration,
-//     toString: function () { return this.name }, // type ID
-//     valueOf: function () { return this.value }, // returns name
-//     toJSON: function () { return this.name } // for serialization
-//   }
+// Enumeration function. It is not a constructor: it does not define
+// 'enumeration' class. It is a fabric: it creates and returns a new
+// class with each call
+function enumeration (namesToValues) {
+  // fake constructor to return as a return value
+  var enumeration = function () { throw 'Creating class instance is forbidden' + ' Enumeration' }
 
-//   enumeration.values = [] // array of enumerable object-values
+  // enumerable values inherit 'this' object
+  var proto = enumeration.prototype = {
+    constructor: enumeration,
+    toString: function () { return this.name }, // type ID
+    valueOf: function () { return this.value }, // returns name
+    toJSON: function () { return this.name } // for serialization
+  }
 
-//   // now creating instances of the new type
-//   for (name in namesToValues) { // for each value
-//     var e = inherit(proto) // create object for its representation
-//     e.name = name // give name to it
-//     e.value = namesToValues[name] // and value
-//     enumeration[name] = e // make it constructor's property
-//     enumeration.values.push(e) // and save into 'values' array
-//   }
-//   // class' method for iteration over class instances in circle
-//   enumeration.foreach = function (f, c) {
-//     for (var i = 0; i < this.values.length; i++) f.call(c.this.values[i])
-//   }
-//   // return constructor, identifying new type
-//   return enumeration
-// }
+  enumeration.values = [] // array of enumerable object-values
+
+  // now creating instances of the new type
+  for (var name in namesToValues) { // for each value
+    var e = inherit(proto) // create object for its representation
+    e.name = name // give name to it
+    e.value = namesToValues[name] // and value
+    enumeration[name] = e // make it constructor's property
+    enumeration.values.push(e) // and save into 'values' array
+  }
+  // class' method for iteration over class instances in circle
+  enumeration.foreach = function (f, c) {
+    for (var i = 0; i < this.values.length; i++) f.call(c.this.values[i])
+  }
+  // return constructor, identifying new type
+  return enumeration
+}
+
 function inherit (p) {
   if (p == null) throw TypeError()
   if (Object.create)
@@ -41,7 +49,7 @@ function inherit (p) {
   return new F()
 }
 function extend (o, p) {
-  for (prop in p) {
+  for (var prop in p) {
     o[prop] = p[prop]
   }
   return o
@@ -358,7 +366,7 @@ function freezeProps (o) {
   var props = (arguments.length == 1) // if agrument is one
     ? Object.getOwnPropertyNames(o) // change all properties
     : Array.prototype.splice.call(arguments, 1) // remove first (object) argument
-  props.forEach(function (n) {  // Makes each property unconfigurable and read-only
+  props.forEach(function (n) { // Makes each property unconfigurable and read-only
     // skip unconfigurable properties
     if (!Object.getOwnPropertyDescriptor(o, n).configurable) return
     Object.defineProperty(o, n, {writable: false, configurable: false})
@@ -367,11 +375,11 @@ function freezeProps (o) {
 }
 // Makes selected (or every) properties of object 'o' non-enumerable
 // if they are configurable
-function hideProps(o) {
+function hideProps (o) {
   var props = (arguments.length == 1) // if agrument is one
     ? Object.getOwnPropertyNames(o) // change all properties
     : Array.prototype.splice.call(arguments, 1) // remove first (object) argument
-  props.forEach(function (n) {  // Makes each property unconfigurable and read-only
+  props.forEach(function (n) { // Makes each property unconfigurable and read-only
     // skip unconfigurable properties
     if (!Object.getOwnPropertyDescriptor(o, n).configurable) return
     Object.defineProperty(o, n, {enumerable: false})
@@ -380,15 +388,45 @@ function hideProps(o) {
 }
 
 // More simple definition of a read-only class
+// function Range (from, to) {
+//   this.from = from
+//   this.to = to
+//   freezeProps(this)
+// }
+// Range.prototype = hideProps({
+//   constructor: Range,
+//   includes: function (x) { return this.from <= x && x <= this.to },
+//   foreach: function (f) { for (var x = Math.ceil(this.from); x <= this.to; x++) f(x) },
+//   toString: function () { return '(' + this.from + '...' + this.to + ')' }
+// })
+/* =================================================================== */
+
+/* ===== Range class with strictly incapsulated ranges ===== */
 function Range (from, to) {
-  this.from = from
-  this.to = to
-  freezeProps(this)
+  // first check condition met
+  if (from > to) throw new Error("Range: 'from' must be less than 'to'")
+  // definition of access methods, which control condition fulfillment
+  function getFrom () { return from }
+  function getTo () { return to }
+  function setFrom (f) {
+    if (f <= to) from = f
+    else throw new Error("Range: 'from' must be less than 'to'")
+  }
+  function setTo (t) {
+    if (to >= from) to = t
+    else throw new Error("Range: 'to' must be >= than 'from'")
+  }
+  // create enumerable, unconfigurable properties with access methods
+  Object.defineProperties(this, {
+    from: {get: getFrom, set: setFrom, enumerable: true, configurable: false},
+    to: {get: getTo, set: setTo, enumerable: true, configurable: false}
+  })
 }
+// prototype configuration stays the same
 Range.prototype = hideProps({
   constructor: Range,
   includes: function (x) { return this.from <= x && x <= this.to },
   foreach: function (f) { for (var x = Math.ceil(this.from); x <= this.to; x++) f(x) },
   toString: function () { return '(' + this.from + '...' + this.to + ')' }
 })
-/* =================================================================== */
+
